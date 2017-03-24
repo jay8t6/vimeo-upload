@@ -2,11 +2,12 @@
  | Vimeo-Upload: Upload videos to your Vimeo account directly from a
  |               browser or a Node.js app
  |
- |  ╭───╮╭─╮  
- |  │   ││ │╭─╮╭──┬──┬─╮╭───╮╭───╮   
- |  │   ││ │├─┤│ ╭╮ ╭╮ ││ ─ ││╭╮ │  ╭────────┬─────────────────────╮
- |  ╰╮  ╰╯╭╯│ ││ ││ ││ ││  ─┤│╰╯ │  | UPLOAD │ ▒▒▒▒▒▒▒▒▒▒▒░░░░ %75 | 
- |   ╰────╯ ╰─╯╰─╯╰─╯╰─╯╰───╯╰───╯  ╰────────┴─────────────────────╯                    
+ |  _    ___
+ | | |  / (_)___ ___  ___  ____
+ | | | / / / __ `__ \/ _ \/ __ \   ┌───────────────────────────┐
+ | | |/ / / / / / / /  __/ /_/ /   | ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  %75    |
+ | |___/_/_/ /_/ /_/\___/\____/    └───────────────────────────┘
+ |                      Upload
  |
  |
  | This project was released under Apache 2.0" license.
@@ -161,7 +162,7 @@
         this.videoData = {
             name: (opts.name > '') ? opts.name : defaults.name,
             description: (opts.description > '') ? opts.description : defaults.description,
-            'privacy.view': opts.private ? 'nobody' : 'anybody'
+            'privacy.view': opts.private ? 'unlisted' : 'anybody'
         }
 
         if (!(this.url = opts.url)) {
@@ -190,6 +191,7 @@
      */
     me.prototype.upload = function() {
         var xhr = new XMLHttpRequest()
+        xhr.requestFromVimeo = true
         xhr.open(this.httpMethod, this.url, true)
         xhr.setRequestHeader('Authorization', 'Bearer ' + this.token)
         xhr.setRequestHeader('Content-Type', 'application/json')
@@ -236,6 +238,7 @@
         }
 
         var xhr = new XMLHttpRequest()
+        xhr.requestFromVimeo = true
         xhr.open('PUT', this.url, true)
         xhr.setRequestHeader('Content-Type', this.contentType)
             // xhr.setRequestHeader('Content-Length', this.file.size)
@@ -256,6 +259,7 @@
      */
     me.prototype.resume_ = function() {
         var xhr = new XMLHttpRequest()
+        xhr.requestFromVimeo = true
         xhr.open('PUT', this.url, true)
         xhr.setRequestHeader('Content-Range', 'bytes */' + this.file.size)
         xhr.setRequestHeader('X-Upload-Content-Type', this.file.type)
@@ -289,6 +293,7 @@
      */
     me.prototype.complete_ = function(xhr) {
         var xhr = new XMLHttpRequest()
+        xhr.requestFromVimeo = true
         xhr.open('DELETE', this.complete_url, true)
         xhr.setRequestHeader('Authorization', 'Bearer ' + this.token)
 
@@ -321,6 +326,7 @@
         var url = this.buildUrl_(video_id, [], defaults.api_url + '/videos/')
         var httpMethod = 'PATCH'
         var xhr = new XMLHttpRequest()
+        xhr.requestFromVimeo = true
 
         xhr.open(httpMethod, url, true)
         xhr.setRequestHeader('Authorization', 'Bearer ' + this.token)
