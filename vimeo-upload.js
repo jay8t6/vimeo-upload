@@ -194,6 +194,7 @@
         xhr.requestFromVimeo = true
         xhr.open(this.httpMethod, this.url, true)
         xhr.setRequestHeader('Authorization', 'Bearer ' + this.token)
+        xhr.setRequestHeader('Accept', 'application/vnd.vimeo.*+json;version=3.2')
         xhr.setRequestHeader('Content-Type', 'application/json')
 
         xhr.onload = function(e) {
@@ -241,6 +242,7 @@
         xhr.requestFromVimeo = true
         xhr.open('PUT', this.url, true)
         xhr.setRequestHeader('Content-Type', this.contentType)
+        xhr.setRequestHeader('Accept', 'application/vnd.vimeo.*+json;version=3.2')
             // xhr.setRequestHeader('Content-Length', this.file.size)
         xhr.setRequestHeader('Content-Range', 'bytes ' + this.offset + '-' + (end - 1) + '/' + this.file.size)
 
@@ -296,6 +298,7 @@
         xhr.requestFromVimeo = true
         xhr.open('DELETE', this.complete_url, true)
         xhr.setRequestHeader('Authorization', 'Bearer ' + this.token)
+        xhr.setRequestHeader('Accept', 'application/vnd.vimeo.*+json;version=3.2')
 
         xhr.onload = function(e) {
 
@@ -330,6 +333,7 @@
 
         xhr.open(httpMethod, url, true)
         xhr.setRequestHeader('Authorization', 'Bearer ' + this.token)
+        xhr.setRequestHeader('Accept', 'application/vnd.vimeo.*+json;version=3.2')
         xhr.onload = function(e) {
             // add the metadata
             this.onGetMetadata_(e, video_id)
