@@ -451,7 +451,7 @@
         var url = baseUrl || defaults.api_url + '/me/'
         if (projectId) {
           url += 'projects/' + projectId + '/videos'
-        } else {
+        } else if (!baseUrl) {
           url += 'videos'
         }
         if (id) {
