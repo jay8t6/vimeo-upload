@@ -329,7 +329,7 @@
      * @param {string} [id] Video Id
      */
     me.prototype.onUpdateVideoData_ = function(video_id) {
-        var url = this.buildUrl_(video_id, [], defaults.api_url + '/videos/')
+        var url = this.buildUrl_(video_id, [], defaults.api_url + '/videos/', null)
         var httpMethod = 'PATCH'
         var xhr = new XMLHttpRequest()
         xhr.requestFromVimeo = true
