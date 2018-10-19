@@ -450,9 +450,9 @@
     me.prototype.buildUrl_ = function(id, params, baseUrl, projectId) {
         var url = baseUrl || defaults.api_url + '/me/'
         if (projectId) {
-          url+ = 'projects/' + projectId + '/videos'
+          url += 'projects/' + projectId + '/videos'
         } else {
-          url+ = 'videos'
+          url += 'videos'
         }
         if (id) {
             url += id
