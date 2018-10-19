@@ -96,6 +96,7 @@
     - token (string), vimeo api token
     - file (object), video file
     - metadata (array), data to associate with the video
+    - project_id {string}, project where the videos should be uploaded
     - upgrade_to_1080 (boolean), set video resolution to high definition
     - offset (int),
     - chunkSize (int),
@@ -114,6 +115,7 @@
         token: null,
         file: {},
         metadata: [],
+        project_id: null,
         upgrade_to_1080: false,
         offset: 0,
         chunkSize: 0,
@@ -145,6 +147,7 @@
      * @param {object} [options.params] Additional query parameters
      * @param {string} [options.contentType] Content-type, if overriding the type of the blob.
      * @param {object} [options.metadata] File metadata
+     * @param {string} [options.project_id] Project id
      * @param {function} [options.onComplete] Callback for when upload is complete
      * @param {function} [options.onProgress] Callback for status for the in-progress upload
      * @param {function} [options.onError] Callback if upload fails
@@ -167,7 +170,7 @@
 
         if (!(this.url = opts.url)) {
             var params = opts.params || {} /*  TODO params.uploadType = 'resumable' */
-            this.url = this.buildUrl_(opts.fileId, params, opts.baseUrl)
+            this.url = this.buildUrl_(opts.fileId, params, opts.baseUrl, opts.project_id)
         }
     }
 
@@ -440,10 +443,17 @@
      * @private
      * @param {string} [id] File ID if replacing
      * @param {object} [params] Query parameters
+     * @param {string} [baseUrl] Base api url
+     * @param {string} [projectId] Project id
      * @return {string} URL
      */
-    me.prototype.buildUrl_ = function(id, params, baseUrl) {
-        var url = baseUrl || defaults.api_url + '/me/videos'
+    me.prototype.buildUrl_ = function(id, params, baseUrl, projectId) {
+        var url = baseUrl || defaults.api_url + '/me/'
+        if (projectId) {
+          url+ = 'projects/' + projectId + '/videos'
+        } else {
+          url+ = 'videos'
+        }
         if (id) {
             url += id
         }
