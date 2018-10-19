@@ -160,7 +160,7 @@
         }
 
         this.contentType = opts.contentType || this.file.type || defaults.contentType
-        this.httpMethod = opts.fileId ? 'PUT' : 'POST'
+        this.httpMethod = opts.fileId || opts.project_id ? 'PUT' : 'POST'
 
         this.videoData = {
             name: (opts.name > '') ? opts.name : defaults.name,
