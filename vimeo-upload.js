@@ -160,7 +160,7 @@
         }
 
         this.contentType = opts.contentType || this.file.type || defaults.contentType
-        this.httpMethod = opts.fileId || opts.project_id ? 'PUT' : 'POST'
+        this.httpMethod = opts.fileId ? 'PUT' : 'POST'
 
         this.videoData = {
             name: (opts.name > '') ? opts.name : defaults.name,
@@ -338,6 +338,35 @@
         xhr.setRequestHeader('Authorization', 'Bearer ' + this.token)
         xhr.setRequestHeader('Accept', 'application/vnd.vimeo.*+json;version=3.2')
         xhr.onload = function(e) {
+          if (e.target.status < 400) {
+            if (this.project_id) {
+              this.movetoProject_(video_id, this.project_id)
+            } else {
+              // add the metadata
+              this.onGetMetadata_(e, video_id)
+            }
+          }
+        }.bind(this)
+        xhr.send(this.buildQuery_(this.videoData))
+    }
+
+    /**
+     * move the video into project
+     *
+     * @private
+     * @param {string} [id] Video Id
+     * @param {string} [id] Project Id
+     */
+    me.prototype.movetoProject_ = function(video_id, project_id) {
+        var url = this.buildUrl_(video_id, [], defaults.api_url + '/me/projects/' + project_id + '/videos/', null)
+        var httpMethod = 'PUT'
+        var xhr = new XMLHttpRequest()
+        xhr.requestFromVimeo = true
+
+        xhr.open(httpMethod, url, true)
+        xhr.setRequestHeader('Authorization', 'Bearer ' + this.token)
+        xhr.setRequestHeader('Accept', 'application/vnd.vimeo.*+json;version=3.2')
+        xhr.onload = function(e) {
             // add the metadata
             this.onGetMetadata_(e, video_id)
         }.bind(this)
@@ -448,14 +477,9 @@
      * @return {string} URL
      */
     me.prototype.buildUrl_ = function(id, params, baseUrl, projectId) {
-        var url = baseUrl || defaults.api_url + '/me/'
-        if (projectId) {
-          url += 'projects/' + projectId + '/videos'
-        } else if (!baseUrl) {
-          url += 'videos'
-        }
+        var url = baseUrl || defaults.api_url + '/me/videos'
         if (id) {
-            url += id
+          url += id
         }
         var query = this.buildQuery_(params)
         if (query) {
