@@ -340,7 +340,7 @@
         xhr.onload = function(e) {
           if (e.target.status < 400) {
             if (this.project_id) {
-              this.movetoProject_(video_id, this.project_id)
+              this.movetoProject_(e, video_id, this.project_id)
             } else {
               // add the metadata
               this.onGetMetadata_(e, video_id)
@@ -354,10 +354,11 @@
      * move the video into project
      *
      * @private
+     * @param {object} e XHR event
      * @param {string} [id] Video Id
      * @param {string} [id] Project Id
      */
-    me.prototype.movetoProject_ = function(video_id, project_id) {
+    me.prototype.movetoProject_ = function(e, video_id, project_id) {
         var url = this.buildUrl_(video_id, [], defaults.api_url + '/me/projects/' + project_id + '/videos/', null)
         var httpMethod = 'PUT'
         var xhr = new XMLHttpRequest()
@@ -366,7 +367,7 @@
         xhr.open(httpMethod, url, true)
         xhr.setRequestHeader('Authorization', 'Bearer ' + this.token)
         xhr.setRequestHeader('Accept', 'application/vnd.vimeo.*+json;version=3.2')
-        xhr.onload = function(e) {
+        xhr.onload = function() {
             // add the metadata
             this.onGetMetadata_(e, video_id)
         }.bind(this)
